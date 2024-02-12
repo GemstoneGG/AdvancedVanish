@@ -1,3 +1,5 @@
+@file:Suppress("UnstableApiUsage")
+
 package me.quantiom.advancedvanish.command
 
 import co.aikar.commands.BaseCommand
@@ -49,7 +51,7 @@ object VanishCommand : BaseCommand() {
         if (!permissionCheck(sender, "permissions.version-command", "advancedvanish.version-command")) return
 
         sender.sendConfigMessage("version-command",
-            "%version%" to "v${AdvancedVanish.instance!!.description.version}"
+            "%version%" to "v${AdvancedVanish.instance!!.pluginMeta.version}"
         )
     }
 
@@ -97,7 +99,7 @@ object VanishCommand : BaseCommand() {
 
         val players = AdvancedVanishAPI.vanishedPlayers.map(Bukkit::getPlayer).map { it!! }.joinToString(", ", transform = Player::getName)
 
-        player.sendConfigMessage("vanished-list", "%vanished-players%" to if (players.isEmpty()) "None" else players)
+        player.sendConfigMessage("vanished-list", "%vanished-players%" to players.ifEmpty { "None" })
     }
 
     @Subcommand("status")
@@ -174,7 +176,7 @@ object VanishCommand : BaseCommand() {
     private fun onHelp(sender: CommandSender) {
         if (!permissionCheck(sender, "permissions.help-command", "advancedvanish.help-command")) return
 
-        this.HELP_MESSAGE.forEach { sender.sendComponentMessage(it.color()) }
+        this.HELP_MESSAGE.forEach { sender.sendMessage(it.color()) }
     }
 
     private fun permissionCheck(sender: CommandSender, key: String, default: String): Boolean {

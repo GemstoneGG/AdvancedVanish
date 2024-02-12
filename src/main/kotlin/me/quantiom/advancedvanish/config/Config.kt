@@ -11,7 +11,6 @@ import me.quantiom.advancedvanish.state.VanishStateManager
 import me.quantiom.advancedvanish.util.applyPlaceholders
 import me.quantiom.advancedvanish.util.color
 import me.quantiom.advancedvanish.util.colorLegacy
-import me.quantiom.advancedvanish.util.sendComponentMessage
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.minimessage.MiniMessage
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer
@@ -37,12 +36,11 @@ object Config {
         var inputStream: InputStream? = null
 
         try {
-            inputStream = resource.buffered()
+            inputStream = resource!!.buffered()
             p.load(inputStream)
         } catch (e: IOException) {
             e.printStackTrace()
             AdvancedVanish.instance!!.logger.log(Level.SEVERE, "Unable to read app.properties! Shutting down...")
-            AdvancedVanish.instance!!.pluginLoader.disablePlugin(AdvancedVanish.instance!!)
         } finally {
             Closeables.closeQuietly(inputStream)
             CONFIG_VERSION = p.getProperty("application.config.version").toInt()
@@ -163,7 +161,7 @@ object Config {
             prefix = this.getValueOrDefault("messages.prefix.value", "<red>[AdvancedVanish]<white> ")
         }
 
-        this.getMessage(key).filter { it.isNotEmpty() }.forEach { player.sendComponentMessage(prefix.color().append(it.color())) }
+        this.getMessage(key).filter { it.isNotEmpty() }.forEach { player.sendMessage(prefix.color().append(it.color())) }
     }
 
     fun sendMessage(sender: CommandSender, key: String, vararg pairs: Pair<String, String>) {
@@ -173,7 +171,7 @@ object Config {
             prefix = this.getValueOrDefault("messages.prefix.value", "<red>[AdvancedVanish]<white> ").color()
         }
 
-        this.getMessage(key, *pairs).filter { it.isNotEmpty() }.forEach { sender.sendComponentMessage(prefix.append(it.color())) }
+        this.getMessage(key, *pairs).filter { it.isNotEmpty() }.forEach { sender.sendMessage(prefix.append(it.color())) }
     }
 
     private fun reloadMessages() {

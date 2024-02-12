@@ -38,7 +38,7 @@ object AdvancedVanishAPI {
         if (prePlayerVanishEvent.isCancelled) return
 
         this.vanishedPlayers.add(player.uniqueId)
-        
+
         // add vanished metadata to player for other plugins to use
         player.setMetadata("vanished", FixedMetadataValue(AdvancedVanish.instance!!, true))
 
@@ -100,7 +100,7 @@ object AdvancedVanishAPI {
                 "%player-name%" to player.name
             ).color()
 
-            Bukkit.getOnlinePlayers().forEach { it.sendComponentMessage(message) }
+            Bukkit.getOnlinePlayers().forEach { it.sendMessage(message) }
         }
 
         if (Config.getValueOrDefault("when-vanished.fly.enable", true)) {
@@ -162,7 +162,7 @@ object AdvancedVanishAPI {
                 "%player-name%" to player.name
             ).color()
 
-            Bukkit.getOnlinePlayers().forEach { it.sendComponentMessage(message) }
+            Bukkit.getOnlinePlayers().forEach { it.sendMessage(message) }
         }
 
         Bukkit.getPluginManager().callEvent(PlayerUnVanishEvent(player, onLeave))
