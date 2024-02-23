@@ -5,7 +5,7 @@
 
     <groupId>me.quantiom</groupId>
     <artifactId>advancedvanish</artifactId>
-    <version>1.2.6-chaosmine</version>
+    <version>1.2.7</version>
     <packaging>jar</packaging>
 
     <name>AdvancedVanish</name>
@@ -200,7 +200,7 @@
     </dependencies>
 
     <build>
-        <finalName>AdvancedVanish</finalName>
+        <finalName>AdvancedVanish-${project.version}</finalName>
         <sourceDirectory>src/main/kotlin</sourceDirectory>
         <resources>
             <resource>
