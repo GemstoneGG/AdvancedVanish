@@ -23,7 +23,7 @@ class ActionBarHook : IHook {
     override fun getID() = "ActionBar"
 
     override fun onEnable() {
-        this.updateTask.runTaskTimer(AdvancedVanish.instance!!, 0L, 40L)
+        this.updateTask.runTaskTimer(AdvancedVanish.instance!!, 0L, 30L)
     }
 
     override fun onDisable() {
@@ -35,7 +35,7 @@ class ActionBarHook : IHook {
     }
 
     private fun sendActionBarStr(player: Player, str: String) {
-        AdvancedVanish.adventure?.player(player)?.sendActionBar(str.color())
+        player.sendActionBar(str.color())
     }
 
     @EventHandler

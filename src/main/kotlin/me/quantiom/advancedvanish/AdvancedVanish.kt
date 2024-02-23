@@ -10,14 +10,12 @@ import me.quantiom.advancedvanish.state.VanishStateManager
 import me.quantiom.advancedvanish.sync.ServerSyncManager
 import me.quantiom.advancedvanish.util.AdvancedVanishAPI
 import me.quantiom.advancedvanish.util.UpdateChecker
-import net.kyori.adventure.platform.bukkit.BukkitAudiences
 import org.bukkit.Bukkit
 import java.util.logging.Level
 
 object AdvancedVanish {
     var instance: AdvancedVanishPlugin? = null
     var commandManager: PaperCommandManager? = null
-    var adventure: BukkitAudiences? = null
 
     fun log(level: Level, msg: String) {
         instance!!.logger.log(level, msg)
@@ -25,8 +23,6 @@ object AdvancedVanish {
 
     fun onEnable(plugin: AdvancedVanishPlugin) {
         instance = plugin
-
-        adventure = BukkitAudiences.create(plugin)
 
         commandManager = PaperCommandManager(plugin).also {
             it.enableUnstableAPI("help")
@@ -53,7 +49,6 @@ object AdvancedVanish {
     }
 
     fun onDisable() {
-        adventure?.close()
         ServerSyncManager.close()
         VanishStateManager.onDisable()
         AdvancedVanishAPI.vanishedPlayers.map(Bukkit::getPlayer).forEach { AdvancedVanishAPI.unVanishPlayer(it!!) }

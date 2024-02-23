@@ -1,6 +1,5 @@
 package me.quantiom.advancedvanish;
 
-import me.quantiom.advancedvanish.util.DependencyManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -14,10 +13,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class AdvancedVanishPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
-        // load dependencies
-        DependencyManager dependencyManager = new DependencyManager(this);
-        dependencyManager.loadDependencies();
-
         AdvancedVanish.INSTANCE.onEnable(this);
     }
 

@@ -4,9 +4,14 @@ author: quantiom
 version: ${project.version}
 main: ${project.groupId}.${project.artifactId}.${project.name}Plugin
 softdepend: [LuckPerms, PlaceholderAPI, GroupManager, PermissionsEx, bPermissions, DiscordSRV, Dynmap, squaremap, LibsDisguises, PlayerParticles, Essentials, PlaceholderAPI, ProtocolLib]
-api-version: 1.13
+api-version: 1.20
 commands:
   vanish:
     description: The main vanish command.
     aliases: [v, advancedvanish]
     usage: /vanish
+
+libraries:
+- 'co.aikar:acf-paper:0.5.1-SNAPSHOT'
+- 'redis.clients:jedis:jar:5.1.0'
+- 'org.jetbrains.kotlin:kotlin-stdlib:jar:1.9.22'
