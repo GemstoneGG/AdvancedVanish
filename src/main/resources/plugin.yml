@@ -12,6 +12,6 @@ commands:
     usage: /vanish
 
 libraries:
-- 'co.aikar:acf-paper:jar:0.5.1-20240125.131356-33'
+- 'co.aikar:acf-paper:jar:0.5.1-20240504.183610-34'
 - 'redis.clients:jedis:jar:5.1.0'
 - 'org.jetbrains.kotlin:kotlin-stdlib:jar:1.9.22'
