@@ -103,7 +103,7 @@
         <dependency>
             <groupId>co.aikar</groupId>
             <artifactId>acf-paper</artifactId>
-            <version>0.5.1-SNAPSHOT</version>
+            <version>0.5.1-20240504.183610-34</version>
             <scope>compile</scope>
         </dependency>
         <!-- https://mvnrepository.com/artifact/net.luckperms/api -->
@@ -116,7 +116,7 @@
         <dependency>
             <groupId>com.comphenix.protocol</groupId>
             <artifactId>ProtocolLib</artifactId>
-            <version>5.1.0</version>
+            <version>5.2.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
