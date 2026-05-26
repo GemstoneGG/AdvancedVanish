@@ -5,9 +5,7 @@ import me.quantiom.advancedvanish.AdvancedVanish
 import me.quantiom.advancedvanish.config.Config
 import me.quantiom.advancedvanish.event.PlayerUnVanishEvent
 import me.quantiom.advancedvanish.event.PlayerVanishEvent
-import me.quantiom.advancedvanish.hook.HooksManager
 import me.quantiom.advancedvanish.hook.IHook
-import me.quantiom.advancedvanish.util.AdvancedVanishAPI
 import me.quantiom.advancedvanish.util.applyPlaceholders
 import me.quantiom.advancedvanish.util.color
 import me.quantiom.advancedvanish.util.colorLegacy

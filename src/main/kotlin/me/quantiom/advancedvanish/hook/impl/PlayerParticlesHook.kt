@@ -1,28 +1,31 @@
 package me.quantiom.advancedvanish.hook.impl
 
 import dev.esophose.playerparticles.api.PlayerParticlesAPI
+import io.papermc.paper.threadedregions.scheduler.ScheduledTask
 import me.quantiom.advancedvanish.AdvancedVanish
 import me.quantiom.advancedvanish.hook.IHook
 import me.quantiom.advancedvanish.util.AdvancedVanishAPI
-import org.bukkit.scheduler.BukkitRunnable
+import org.bukkit.Bukkit
 
 class PlayerParticlesHook : IHook {
     override fun getID() = "PlayerParticles"
 
-    private val updateTask: BukkitRunnable =
-        object : BukkitRunnable() {
-            override fun run() {
-                AdvancedVanishAPI.vanishedPlayers
-                    .mapNotNull { PlayerParticlesAPI.getInstance().getPPlayer(it) }
-                    .forEach { it.activeParticles.clear() }
-            }
-        }
+    private var updateTask: ScheduledTask? = null
 
     override fun onEnable() {
-        this.updateTask.runTaskTimer(AdvancedVanish.instance!!, 0L, 20L)
+        this.updateTask = Bukkit.getGlobalRegionScheduler().runAtFixedRate(AdvancedVanish.instance!!, { _ ->
+            AdvancedVanishAPI.vanishedPlayers.forEach { uuid ->
+                Bukkit.getPlayer(uuid)?.let { player ->
+                    player.getScheduler().run(AdvancedVanish.instance!!, { _ ->
+                        PlayerParticlesAPI.getInstance().getPPlayer(player.uniqueId)?.activeParticles?.clear()
+                    }, null)
+                }
+            }
+        }, 1L, 20L)
     }
 
     override fun onDisable() {
-        this.updateTask.cancel()
+        this.updateTask?.cancel()
+        this.updateTask = null
     }
 }

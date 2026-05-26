@@ -1,12 +1,10 @@
 package me.quantiom.advancedvanish.state
 
-import com.google.common.collect.Maps
-import com.google.common.collect.Sets
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import java.util.concurrent.ConcurrentHashMap
 import me.quantiom.advancedvanish.AdvancedVanish
 import me.quantiom.advancedvanish.config.Config
-import me.quantiom.advancedvanish.util.AdvancedVanishAPI
 import me.quantiom.advancedvanish.util.isVanished
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
@@ -18,8 +16,8 @@ import java.lang.reflect.Type
 import java.util.*
 
 object VanishStateManager {
-    val savedVanishStates: MutableMap<UUID, Boolean> = Maps.newHashMap()
-    val interactEnabled: MutableSet<UUID> = Sets.newHashSet()
+    val savedVanishStates: MutableMap<UUID, Boolean> = ConcurrentHashMap()
+    val interactEnabled: MutableSet<UUID> = ConcurrentHashMap.newKeySet()
 
     fun onConfigReload() {
         if (!Config.getValueOrDefault("keep-vanish-state", false)

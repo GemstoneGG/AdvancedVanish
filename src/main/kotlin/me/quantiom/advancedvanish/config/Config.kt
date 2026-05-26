@@ -3,8 +3,7 @@ package me.quantiom.advancedvanish.config
 import co.aikar.commands.Locales
 import co.aikar.commands.MessageKeys
 import co.aikar.locales.MessageKeyProvider
-import com.google.common.collect.Maps
-import com.google.common.io.Closeables
+import java.util.concurrent.ConcurrentHashMap
 import me.quantiom.advancedvanish.AdvancedVanish
 import me.quantiom.advancedvanish.sync.ServerSyncManager
 import me.quantiom.advancedvanish.state.VanishStateManager
@@ -29,7 +28,6 @@ object Config {
 
     private var CONFIG_VERSION: Int? = null
 
-    // get config version from maven variable
     init {
         val resource = this.javaClass.classLoader.getResourceAsStream("app.properties")
         val p = Properties()
@@ -42,12 +40,14 @@ object Config {
             e.printStackTrace()
             AdvancedVanish.instance!!.logger.log(Level.SEVERE, "Unable to read app.properties! Shutting down...")
         } finally {
-            Closeables.closeQuietly(inputStream)
+            try {
+                inputStream?.close()
+            } catch (ignored: IOException) {}
             CONFIG_VERSION = p.getProperty("application.config.version").toInt()
         }
     }
 
-    private var messages: MutableMap<String, List<String>> = Maps.newHashMap()
+    private var messages: MutableMap<String, List<String>> = ConcurrentHashMap()
 
     fun reload() {
         if (!File(AdvancedVanish.instance!!.dataFolder.toString() + File.separator, "config.yml").exists()) {
@@ -59,7 +59,6 @@ object Config {
             this.savedConfig = it.config
         }
 
-        // config-version check
         val currentConfigVersion = this.getValueOrDefault("config-version", CONFIG_VERSION)!!
         if (currentConfigVersion != CONFIG_VERSION) {
             File(AdvancedVanish.instance!!.dataFolder.toString() + File.separator, "config.yml").also {
@@ -110,7 +109,6 @@ object Config {
             }
         } else {
             if (newYamlConfig.contains(currKey) && oldYamlConfig.contains(currKey) && newYamlConfig.get(currKey)!!::class == oldYamlConfig.get(currKey)!!::class) {
-                // update formatting to use MiniMessage
                 if (newYamlConfig.get(currKey)!! is String && oldVersion < 8) {
                     newYamlConfig.set(currKey, MiniMessage.miniMessage().serialize(LegacyComponentSerializer.legacyAmpersand().deserialize(oldYamlConfig.get(currKey) as String)))
                 } else {
@@ -127,7 +125,6 @@ object Config {
             return value
         }
 
-        // some default values
         return when (T::class) {
             Boolean::class -> false as T
             String::class -> "" as T
@@ -189,7 +186,7 @@ object Config {
     }
 
     private fun reloadCommandHandlerMessages() {
-        val commandHandlerMessages: MutableMap<String, String> = Maps.newHashMap()
+        val commandHandlerMessages: MutableMap<String, String> = mutableMapOf()
 
         this.savedConfig?.getConfigurationSection("command-handler-messages")?.let {
             it.getKeys(false).forEach { key ->
@@ -209,7 +206,7 @@ object Config {
             prefix + if (commandHandlerMessages.containsKey(key)) commandHandlerMessages[key]!! else default
         }
 
-        val messages: MutableMap<MessageKeyProvider, String> = Maps.newHashMap()
+        val messages: MutableMap<MessageKeyProvider, String> = mutableMapOf()
 
         messages[MessageKeys.UNKNOWN_COMMAND] = getOrDefault("unknown-command", "Invalid arguments.")
             .color().colorLegacy()

@@ -52,7 +52,7 @@ object RedisServerSyncStore : IServerSyncStore {
     }
 
     override fun setAsync(key: UUID, value: Boolean) {
-        Bukkit.getScheduler().runTaskAsynchronously(AdvancedVanish.instance!!, Runnable {
+        Bukkit.getAsyncScheduler().runNow(AdvancedVanish.instance!!) {
             try {
                 this.pool?.resource?.let { resource ->
                     resource.set(this.getPlayerKey(key), value.toString())
@@ -62,7 +62,7 @@ object RedisServerSyncStore : IServerSyncStore {
                 AdvancedVanish.log(Level.SEVERE, "There was an error while attempting to make a connection with Redis: ")
                 e.printStackTrace()
             }
-        })
+        }
     }
 
     private fun getPlayerKey(uuid: UUID) = "advancedvanish-${uuid}"
