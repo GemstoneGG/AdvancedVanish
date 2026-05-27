@@ -51,7 +51,7 @@ object AdvancedVanish {
     fun onDisable() {
         ServerSyncManager.close()
         VanishStateManager.onDisable()
-        AdvancedVanishAPI.vanishedPlayers.map(Bukkit::getPlayer).forEach { AdvancedVanishAPI.unVanishPlayer(it!!) }
+        AdvancedVanishAPI.vanishedPlayers.mapNotNull(Bukkit::getPlayer).forEach { AdvancedVanishAPI.unVanishPlayer(it) }
         HooksManager.disableHooks()
         commandManager?.unregisterCommand(VanishCommand)
     }

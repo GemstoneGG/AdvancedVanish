@@ -1,12 +1,10 @@
 package me.quantiom.advancedvanish.util
 
-import me.quantiom.advancedvanish.AdvancedVanish
 import me.quantiom.advancedvanish.config.Config
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.minimessage.MiniMessage
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer
 import org.bukkit.command.CommandSender
-import org.bukkit.entity.Player
 
 fun String.applyPlaceholders(vararg pairs: Pair<String, String>): String {
     var intermediate = this

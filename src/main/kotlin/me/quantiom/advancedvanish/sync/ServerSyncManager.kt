@@ -1,6 +1,6 @@
 package me.quantiom.advancedvanish.sync
 
-import com.google.common.collect.Maps
+import java.util.concurrent.ConcurrentHashMap
 import me.quantiom.advancedvanish.AdvancedVanish
 import me.quantiom.advancedvanish.config.Config
 import me.quantiom.advancedvanish.event.PlayerUnVanishEvent
@@ -17,7 +17,7 @@ object ServerSyncManager : Listener {
     var crossServerSupportEnabled: Boolean = false
     var serverSyncStoreImpl: IServerSyncStore? = null
 
-    var loginVanishStates: MutableMap<UUID, Boolean> = Maps.newHashMap()
+    var loginVanishStates: MutableMap<UUID, Boolean> = ConcurrentHashMap()
 
     fun setup() {
         if (Config.getValueOrDefault("cross-server-support.enabled", false)) {
@@ -32,7 +32,6 @@ object ServerSyncManager : Listener {
 
             this.crossServerSupportEnabled = serverSyncStoreImpl!!.setup()
         } else {
-            // if the cross-server-support option gets disabled when reloading
             this.serverSyncStoreImpl?.close()
             this.crossServerSupportEnabled = false
         }

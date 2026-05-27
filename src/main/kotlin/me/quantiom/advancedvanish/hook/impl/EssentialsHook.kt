@@ -6,8 +6,6 @@ import me.quantiom.advancedvanish.event.PlayerVanishEvent
 import me.quantiom.advancedvanish.hook.IHook
 import org.bukkit.Bukkit
 import org.bukkit.event.EventHandler
-import org.bukkit.event.EventPriority
-import org.bukkit.event.player.PlayerJoinEvent
 
 class EssentialsHook : IHook {
     private var essentials = Bukkit.getPluginManager().getPlugin("Essentials") as Essentials

@@ -97,7 +97,7 @@ object VanishCommand : BaseCommand() {
     private fun onListCommand(player: Player) {
         if (!permissionCheck(player, "permissions.list-command", "advancedvanish.list-command")) return
 
-        val players = AdvancedVanishAPI.vanishedPlayers.map(Bukkit::getPlayer).map { it!! }.joinToString(", ", transform = Player::getName)
+        val players = AdvancedVanishAPI.vanishedPlayers.mapNotNull(Bukkit::getPlayer).joinToString(", ", transform = Player::getName)
 
         player.sendConfigMessage("vanished-list", "%vanished-players%" to players.ifEmpty { "None" })
     }

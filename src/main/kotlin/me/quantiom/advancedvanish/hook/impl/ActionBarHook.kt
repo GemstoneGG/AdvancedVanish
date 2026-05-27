@@ -1,5 +1,6 @@
 package me.quantiom.advancedvanish.hook.impl
 
+import io.papermc.paper.threadedregions.scheduler.ScheduledTask
 import me.quantiom.advancedvanish.AdvancedVanish
 import me.quantiom.advancedvanish.config.Config
 import me.quantiom.advancedvanish.event.PlayerUnVanishEvent
@@ -10,24 +11,27 @@ import me.quantiom.advancedvanish.util.color
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
-import org.bukkit.scheduler.BukkitRunnable
 
 class ActionBarHook : IHook {
-    private val updateTask: BukkitRunnable =
-        object : BukkitRunnable() {
-            override fun run() {
-                AdvancedVanishAPI.vanishedPlayers.map(Bukkit::getPlayer).map { it!! }.forEach(::sendActionBar)
-            }
-        }
+    private var updateTask: ScheduledTask? = null
 
     override fun getID() = "ActionBar"
 
     override fun onEnable() {
-        this.updateTask.runTaskTimer(AdvancedVanish.instance!!, 0L, 30L)
+        this.updateTask = Bukkit.getGlobalRegionScheduler().runAtFixedRate(AdvancedVanish.instance!!, { _ ->
+            AdvancedVanishAPI.vanishedPlayers.forEach { uuid ->
+                Bukkit.getPlayer(uuid)?.let { player ->
+                    player.getScheduler().run(AdvancedVanish.instance!!, { _ ->
+                        sendActionBar(player)
+                    }, null)
+                }
+            }
+        }, 1L, 30L)
     }
 
     override fun onDisable() {
-        this.updateTask.cancel()
+        this.updateTask?.cancel()
+        this.updateTask = null
     }
 
     private fun sendActionBar(player: Player) {

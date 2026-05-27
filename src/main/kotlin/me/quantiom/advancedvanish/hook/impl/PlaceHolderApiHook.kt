@@ -25,8 +25,7 @@ class PlaceHolderApiHook : IHook {
             return when (params.lowercase()) {
                 isVanishedPlaceholder -> if (player?.isVanished() == true) "Yes" else "No"
                 vanishedPlayersPlaceholder -> AdvancedVanishAPI.vanishedPlayers
-                        .map(Bukkit::getPlayer)
-                        .map { it!! }
+                        .mapNotNull(Bukkit::getPlayer)
                         .joinToString(", ", transform = Player::getName)
                         .ifEmpty { "None" }
                 playerCountPlaceholder -> (Bukkit.getOnlinePlayers().size - AdvancedVanishAPI.vanishedPlayers.size).toString()
